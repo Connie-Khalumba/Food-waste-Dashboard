@@ -1,39 +1,38 @@
-// src/components/OrderTimeChart.js
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { useTheme } from '../context/ThemeContext'; // If using Context
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const OrderTimeChart = () => {
+  const { isDarkMode } = useTheme(); // If using Context, otherwise use props
+
   const orderTimeData = {
     labels: ['Afternoon', 'Evening', 'Morning'],
     datasets: [
       {
-        data: [1890, 1260, 850], // Keep the data as is, but ensure it fits visually
-        backgroundColor: ['#4ADE80', '#A3E635', '#D1D5DB'], // Green, Yellow-Green, Gray
+        data: [1890, 1260, 850],
+        backgroundColor: ['#4ADE80', '#A3E635', '#D1D5DB'], // Green, Yellow-Green, Gray (same in both modes)
       },
     ],
   };
 
   const options = {
-    maintainAspectRatio: false, // Allow custom sizing
-    responsive: true, // Ensure responsiveness
-    animation: false, // Disable animations for performance
-    plugins: {
-      legend: { display: true, position: 'bottom' }, // Keep legend at bottom, adjust if needed
-    },
-    // No scales needed for Pie charts, but we can control size via container
+    maintainAspectRatio: false,
+    responsive: true,
+    animation: false,
+    plugins: { legend: { display: true, position: 'bottom', labels: { color: isDarkMode ? '#FFFFFF' : '#4A5568' } } },
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md max-h-64 h-64 w-full"> {/* Fixed height and width */}
-      <h2 className="text-lg font-semibold mb-2">Order Time</h2>
-      <p className="text-sm text-gray-500">From 1-6 Dec, 2020</p>
-      <div className="h-full w-full"> {/* Ensure chart fits within container */}
+    <div className={`bg-white p-4 rounded-lg shadow-md max-h-64 h-64 w-full overflow-hidden ${isDarkMode ? 'dark:bg-gray-800 dark:text-white dark:shadow-gray-700' : ''}`}>
+      <h2 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : ''}`}>Order Time</h2>
+      <p className={`text-sm ${isDarkMode ? 'dark:text-gray-400' : 'text-gray-500'}`}>From 1-6 Dec, 2020</p>
+      <div className="h-full w-full">
         <Pie data={orderTimeData} options={options} />
       </div>
-      <div className="mt-4">
+      <div className={`mt-4 ${isDarkMode ? 'dark:text-gray-300' : ''}`}>
         <p>Afternoon: 40%</p>
         <p>Evening: 32%</p>
         <p>Morning: 28%</p>

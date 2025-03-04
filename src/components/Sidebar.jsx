@@ -1,27 +1,22 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext'; // If using Context
 
 const Sidebar = () => {
+  const { isDarkMode } = useTheme(); // If using Context, otherwise use props
+
   return (
-    <div className="w-64 bg-white shadow-md">
+    <div className={`w-64 shadow-md ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600'}`}>
       <div className="p-4">
-        <h1 className="text-xl font-bold text-green-600">RediFu</h1>
+        <h1 className={`text-xl font-bold ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>RediFu</h1>
       </div>
       <nav className="mt-6">
         <ul>
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-            <Link to="/" className="text-gray-600 hover:text-green-600">
-              Dashboard (User)
-            </Link>
-          </li>
-          <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-            <Link to="/admin" className="text-gray-600 hover:text-green-600">
-              Admin Dashboard
-            </Link>
-          </li>
-          {['Pickup Schedule', 'Manage Menu', 'Customer Review', 'Settings', 'Payment', 'Accounts', 'Help'].map((item) => (
-            <li key={item} className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-              <span className="text-gray-600">{item}</span>
+          {['Dashboard', 'Pickup Schedule', 'Manage Menu', 'Customer Review', 'Settings', 'Payment', 'Accounts', 'Help'].map((item) => (
+            <li key={item} className={`px-4 py-2 hover:${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'} cursor-pointer`}>
+              <Link to={item === 'Dashboard' ? '/' : '/'} className={`${isDarkMode ? 'text-gray-300 hover:text-white' : 'text-gray-600 hover:text-green-600'}`}>
+                {item}
+              </Link>
             </li>
           ))}
         </ul>
