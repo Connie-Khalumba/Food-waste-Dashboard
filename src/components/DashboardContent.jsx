@@ -1,3 +1,4 @@
+// src/components/DashboardContent.js
 import React from 'react';
 import PeakDaysChart from './PeakDaysChart';
 import OrderTimeChart from './OrderTimeChart';
@@ -8,17 +9,22 @@ import OrderSection from './OrderSection';
 const DashboardContent = () => {
   return (
     <div className="h-full overflow-auto p-6">
-      {/* Upper Section: Charts (Graphs) */}
+      {/* Top Row: Charts (2 columns) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <PeakDaysChart />
         <OrderTimeChart />
-        <OrderSection />
       </div>
 
-      {/* Lower Section: Other Panels */}
+      {/* Bottom Row: Panels (2 main columns, with Order split below Upcoming Pickups) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Left Column: Your Rating */}
         <RatingSection />
-        <UpcomingPickups />
+
+        {/* Right Column: Split vertically into Upcoming Pickups and Order */}
+        <div className="flex flex-col gap-6">
+          <UpcomingPickups />
+          <OrderSection />
+        </div>
       </div>
     </div>
   );
