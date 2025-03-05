@@ -3,6 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Accordion, AccordionItem, AccordionItemButton, AccordionItemPanel } from 'react-accessible-accordion';
 // import 'react-accessible-accordion/dist/react-accessible-accordion.css'; // Correct import for default styles
 import '../styles/accordion.css'; //
+import backgroundImage from '../Assets/conifers-1867371_1280.jpg'
 
 const Help = () => {
   const { isDarkMode } = useTheme();
@@ -16,7 +17,15 @@ const Help = () => {
   };
 
   return (
-    <div className={`p-4 md:p-6 ${isDarkMode ? 'dark:bg-gray-900 dark:text-white' : 'bg-white'}`}>
+    <div
+      className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Use the imported image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <h1 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Help</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* FAQs */}

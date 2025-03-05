@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import backgroundImage from '../Assets/conifers-1867371_1280.jpg'
 
 const Payment = () => {
   const { isDarkMode } = useTheme();
@@ -13,7 +14,15 @@ const Payment = () => {
   };
 
   return (
-    <div className={`p-4 md:p-6 ${isDarkMode ? 'dark:bg-gray-900 dark:text-white' : 'bg-white'}`}>
+    <div
+      className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Use the imported image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <h1 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Payment</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* Payment Form */}
@@ -33,8 +42,9 @@ const Payment = () => {
               className={`w-full p-2 border rounded ${isDarkMode ? 'dark:bg-gray-700 dark:border-gray-600 dark:text-white' : 'border-gray-300'}`}
             >
               <option value="credit">Credit Card</option>
-              <option value="paypal">PayPal</option>
+              <option value="paypal">Intasend</option>
               <option value="bank">Bank Transfer</option>
+              <option value="bank">m-pesa</option>
             </select>
             <button
               type="submit"

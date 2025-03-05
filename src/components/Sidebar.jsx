@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
+import logo from '../Assets/logo.redifu-removebg-preview.png'
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { isDarkMode } = useTheme();
@@ -33,7 +34,11 @@ const Sidebar = ({ isOpen, onClose }) => {
         `}
       >
         <div className="p-4">
-          <h1 className={`text-xl font-bold ${isDarkMode ? 'text-green-400' : 'text-green-600'}`}>RediFu</h1>
+          <img
+            src={logo} // Use logo from public folder
+            alt="RediFu Logo"
+            className={`w-24 h-auto ${isDarkMode ? 'invert' : ''}`} // Adjust size and add invert for dark mode
+          />
         </div>
         <nav className="mt-6">
           <ul>
