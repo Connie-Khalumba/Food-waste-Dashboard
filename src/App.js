@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -14,14 +14,26 @@ import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider } from './context/UserContext';
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+    console.log('Toggling Sidebar:', !isSidebarOpen); // Debug log
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+    console.log('Closing Sidebar'); // Debug log
+  };
+
   return (
     <UserProvider>
       <ThemeProvider>
         <Router>
           <div className="flex h-screen">
-            <Sidebar />
+            <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
             <div className="flex-1 flex flex-col">
-              <Header />
+              <Header toggleSidebar={toggleSidebar} /> {/* Ensure toggleSidebar is passed */}
               <main className="flex-1 p-4 overflow-auto md:p-6">
                 <Routes>
                   <Route path="/" element={<DashboardContent />} />

@@ -35,7 +35,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       >
         <div className="p-4">
           <img
-            src={logo} // Use logo from public folder
+            src={logo} 
             alt="RediFu Logo"
             className={`w-24 h-auto ${isDarkMode ? 'invert' : ''}`} // Adjust size and add invert for dark mode
           />
