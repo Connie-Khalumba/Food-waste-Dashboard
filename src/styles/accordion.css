@@ -1,0 +1,11 @@
+/* src/styles/accordion.css */
+.accordion__item {
+    @apply p-2 rounded bg-gray-100 dark:bg-gray-700;
+  }
+  .accordion__button {
+    @apply text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600;
+  }
+  .accordion__panel {
+    @apply text-gray-500 dark:text-gray-400 p-2;
+  }
+  

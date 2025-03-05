@@ -1,32 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi'; // Removed FiMenuIcon
+import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { isDarkMode } = useTheme();
 
   const menuItems = [
     { name: 'Dashboard', icon: FiHome, path: '/' },
-    { name: 'Pickup Schedule', icon: FiCalendar, path: '/' },
-    { name: 'Manage Menu', icon: FiMenu, path: '/' },
-    { name: 'Customer Review', icon: FiStar, path: '/' },
-    { name: 'Settings', icon: FiSettings, path: '/' },
-    { name: 'Payment', icon: FiDollarSign, path: '/' },
-    { name: 'Accounts', icon: FiUsers, path: '/' },
-    { name: 'Help', icon: FiHelpCircle, path: '/' },
+    { name: 'Pickup Schedule', icon: FiCalendar, path: '/pickup-schedule' },
+    { name: 'Manage Menu', icon: FiMenu, path: '/manage-menu' },
+    { name: 'Customer Review', icon: FiStar, path: '/customer-review' },
+    { name: 'Settings', icon: FiSettings, path: '/settings' },
+    { name: 'Payment', icon: FiDollarSign, path: '/payment' },
+    { name: 'Accounts', icon: FiUsers, path: '/accounts' },
+    { name: 'Help', icon: FiHelpCircle, path: '/help' },
   ];
 
   return (
     <>
-      {/* Overlay for mobile when sidebar is open */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
           onClick={onClose}
         />
       )}
-      {/* Sidebar */}
       <div
         className={`
           fixed h-full shadow-md z-50 transition-transform duration-300

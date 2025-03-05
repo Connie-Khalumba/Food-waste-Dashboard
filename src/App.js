@@ -1,37 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import AdminDashboardContent from './components/AdminDashboardContent';
-import UserDashboardContent from './components/DashboardContent';
+import DashboardContent from './components/DashboardContent';
+import PickupSchedule from './components/PickupSchedule';
+import ManageMenu from './components/ManageMenu';
+import CustomerReview from './components/CustomerReview';
+import Settings from './components/Settings';
+import Payment from './components/Payment';
+import Accounts from './components/Accounts';
+import Help from './components/Help';
 import { ThemeProvider } from './context/ThemeContext';
+import { UserProvider } from './context/UserContext';
 
 function App() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-
   return (
-    <ThemeProvider>
-      <Router>
-        <div className="flex h-screen">
-          {/* Sidebar - Hidden on mobile, visible on md+ screens, toggleable on mobile */}
-          <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-          <div className="flex-1 flex flex-col">
-            {/* Header with toggle button for mobile */}
-            <Header toggleSidebar={toggleSidebar} />
-            <main className="flex-1 p-4 overflow-auto md:p-6">
-              <Routes>
-                <Route path="/admin" element={<AdminDashboardContent />} />
-                <Route path="/" element={<UserDashboardContent />} />
-              </Routes>
-            </main>
+    <UserProvider>
+      <ThemeProvider>
+        <Router>
+          <div className="flex h-screen">
+            <Sidebar />
+            <div className="flex-1 flex flex-col">
+              <Header />
+              <main className="flex-1 p-4 overflow-auto md:p-6">
+                <Routes>
+                  <Route path="/" element={<DashboardContent />} />
+                  <Route path="/pickup-schedule" element={<PickupSchedule />} />
+                  <Route path="/manage-menu" element={<ManageMenu />} />
+                  <Route path="/customer-review" element={<CustomerReview />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/payment" element={<Payment />} />
+                  <Route path="/accounts" element={<Accounts />} />
+                  <Route path="/help" element={<Help />} />
+                </Routes>
+              </main>
+            </div>
           </div>
-        </div>
-      </Router>
-    </ThemeProvider>
+        </Router>
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 
