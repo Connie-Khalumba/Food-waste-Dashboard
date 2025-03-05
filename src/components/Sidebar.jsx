@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
+import { useUser } from '../context/UserContext'; // Add for role-based rendering
 import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
 import logo from '../Assets/logo.redifu-removebg-preview.png'
 
 const Sidebar = ({ isOpen, onClose }) => {
   const { isDarkMode } = useTheme();
+  const { userRole } = useUser(); // Get user role
 
   const menuItems = [
     { name: 'Dashboard', icon: FiHome, path: '/' },
@@ -18,12 +20,17 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Help', icon: FiHelpCircle, path: '/help' },
   ];
 
+  // Add organization-specific menu items if needed
+  if (userRole === 'organization') {
+    menuItems.push({ name: 'Organization Reports', icon: FiDollarSign, path: '/organization-reports' });
+  }
+
   return (
     <>
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
-          onClick={onClose}
+          onClick={() => { onClose(); console.log('Closing Sidebar'); }}
         />
       )}
       <div

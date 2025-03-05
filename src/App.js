@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import DashboardContent from './components/DashboardContent';
@@ -10,20 +10,21 @@ import Settings from './components/Settings';
 import Payment from './components/Payment';
 import Accounts from './components/Accounts';
 import Help from './components/Help';
+import OrganizationDashboard from './components/OrganizationDashboard';
 import { ThemeProvider } from './context/ThemeContext';
-import { UserProvider } from './context/UserContext';
+import { UserProvider, useUser } from './context/UserContext';
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
-    console.log('Toggling Sidebar:', !isSidebarOpen); // Debug log
+    console.log('Toggling Sidebar:', !isSidebarOpen);
   };
 
   const closeSidebar = () => {
     setIsSidebarOpen(false);
-    console.log('Closing Sidebar'); // Debug log
+    console.log('Closing Sidebar');
   };
 
   return (
@@ -33,10 +34,10 @@ function App() {
           <div className="flex h-screen">
             <Sidebar isOpen={isSidebarOpen} onClose={closeSidebar} />
             <div className="flex-1 flex flex-col">
-              <Header toggleSidebar={toggleSidebar} /> {/* Ensure toggleSidebar is passed */}
+              <Header toggleSidebar={toggleSidebar} />
               <main className="flex-1 p-4 overflow-auto md:p-6">
                 <Routes>
-                  <Route path="/" element={<DashboardContent />} />
+                  <Route path="/" element={<DashboardWrapper />} />
                   <Route path="/pickup-schedule" element={<PickupSchedule />} />
                   <Route path="/manage-menu" element={<ManageMenu />} />
                   <Route path="/customer-review" element={<CustomerReview />} />
@@ -44,6 +45,7 @@ function App() {
                   <Route path="/payment" element={<Payment />} />
                   <Route path="/accounts" element={<Accounts />} />
                   <Route path="/help" element={<Help />} />
+                  <Route path="/organization" element={<OrganizationDashboard />} /> {/* Optional explicit route for organizations */}
                 </Routes>
               </main>
             </div>
@@ -53,5 +55,15 @@ function App() {
     </UserProvider>
   );
 }
+
+// Wrapper component to handle role-based dashboard rendering
+const DashboardWrapper = () => {
+  const { userRole } = useUser();
+
+  if (userRole === 'organization') {
+    return <Navigate to="/organization" replace />; // Redirect organizations to /organization
+  }
+  return <DashboardContent />; // Default to resident dashboard
+};
 
 export default App;
