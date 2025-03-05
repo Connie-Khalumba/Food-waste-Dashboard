@@ -1,12 +1,12 @@
 import React from 'react';
 import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'; // Added PointElement
+import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
 import { useTheme } from '../context/ThemeContext';
 
-ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend); // Updated registration
+ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 const OrderSection = () => {
-  const { isDarkMode } = useTheme(); // Removed toggleTheme since it’s not used
+  const { isDarkMode } = useTheme();
 
   const salesData = {
     labels: ['01', '02', '03', '04', '05', '06'],
@@ -16,14 +16,14 @@ const OrderSection = () => {
         data: [1000, 1200, 800, 1500, 1300, 1800],
         borderColor: '#3B82F6', // Blue (light mode)
         fill: false,
-        tension: 0.1, // Smooth line curve (optional)
+        tension: 0.1, // Smooth line curve
       },
       {
         label: 'Last Week',
         data: [900, 1100, 700, 1400, 1200, 1600],
         borderColor: isDarkMode ? '#A0AEC0' : '#D1D5DB', // Gray, darker in dark mode
         fill: false,
-        tension: 0.1, // Smooth line curve (optional)
+        tension: 0.1, // Smooth line curve
       },
     ],
   };
@@ -31,7 +31,7 @@ const OrderSection = () => {
   const options = {
     maintainAspectRatio: false,
     responsive: true,
-    animation: false, // Disable animations for performance
+    animation: false,
     plugins: {
       legend: { display: true, position: 'bottom', labels: { color: isDarkMode ? '#FFFFFF' : '#4A5568' } },
     },
