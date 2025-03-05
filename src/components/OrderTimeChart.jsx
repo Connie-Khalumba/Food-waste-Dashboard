@@ -1,19 +1,19 @@
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { useTheme } from '../context/ThemeContext'; // If using Context
+import { useTheme } from '../context/ThemeContext';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const OrderTimeChart = () => {
-  const { isDarkMode } = useTheme(); // If using Context, otherwise use props
+  const { isDarkMode } = useTheme();
 
   const orderTimeData = {
     labels: ['Afternoon', 'Evening', 'Morning'],
     datasets: [
       {
         data: [1890, 1260, 850],
-        backgroundColor: ['#4ADE80', '#A3E635', '#D1D5DB'], // Green, Yellow-Green, Gray (same in both modes)
+        backgroundColor: ['#4ADE80', '#A3E635', '#D1D5DB'], // Green, Yellow-Green, Gray
       },
     ],
   };

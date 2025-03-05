@@ -1,12 +1,10 @@
-// src/components/PeakDaysChart.js
-// src/components/DashboardContent.js (or .jsx)
 import React from 'react';
 import PeakDaysChart from './PeakDaysChart';
 import OrderTimeChart from './OrderTimeChart';
 import RatingSection from './RatingSection';
 import UpcomingPickups from './UpcomingPickups';
 import OrderSection from './OrderSection';
-import { useTheme } from '../context/ThemeContext'; // Ensure this import works
+import { useTheme } from '../context/ThemeContext';
 
 const DashboardContent = () => {
   const { isDarkMode } = useTheme();

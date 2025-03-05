@@ -1,8 +1,7 @@
-// src/components/PeakDaysChart.js
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
-import { useTheme } from '../context/ThemeContext'; // Updated path
+import { useTheme } from '../context/ThemeContext';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -15,14 +14,14 @@ const PeakDaysChart = () => {
       {
         label: 'Last 6 days',
         data: [20, 15, 10, 25, 20, 18, 15],
-        backgroundColor: 'rgba(74, 222, 128, 0.5)', // Green (same in both modes)
+        backgroundColor: 'rgba(74, 222, 128, 0.5)',
         borderColor: 'rgba(74, 222, 128, 1)',
         borderWidth: 1,
       },
       {
         label: 'Last Week',
         data: [18, 12, 8, 20, 15, 16, 13],
-        backgroundColor: isDarkMode ? 'rgba(156, 163, 175, 0.5)' : 'rgba(209, 213, 219, 0.5)', // Gray, darker in dark mode
+        backgroundColor: isDarkMode ? 'rgba(156, 163, 175, 0.5)' : 'rgba(209, 213, 219, 0.5)',
         borderColor: isDarkMode ? 'rgba(156, 163, 175, 1)' : 'rgba(209, 213, 219, 1)',
         borderWidth: 1,
       },
@@ -35,7 +34,7 @@ const PeakDaysChart = () => {
     animation: false,
     plugins: { legend: { display: false } },
     scales: {
-      x: { ticks: { font: { size: 12, color: isDarkMode ? '#FFFFFF' : '#4A5568' } } },
+      x: { ticks: { font: { size: 12, color: isDarkMode ? '#FFFFFF' : '#4A5568' } }, barPercentage: 0.8, categoryPercentage: 0.8 },
       y: { beginAtZero: true, max: 30, ticks: { font: { size: 12, color: isDarkMode ? '#FFFFFF' : '#4A5568' } } },
     },
   };

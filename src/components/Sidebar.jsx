@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../context/ThemeContext'; // If using Context
+import { useTheme } from '../context/ThemeContext';
 
 const Sidebar = () => {
-  const { isDarkMode } = useTheme(); // If using Context, otherwise use props
+  const { isDarkMode } = useTheme();
 
   return (
     <div className={`w-64 shadow-md ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-white text-gray-600'}`}>

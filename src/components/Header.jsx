@@ -1,7 +1,6 @@
-// src/components/Header.js (example)
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import user from '../Assets/girl.png'
+import avatar from '../Assets/girl.png'
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -15,7 +14,7 @@ const Header = () => {
       />
       <div className="flex items-center space-x-4">
         <span>Eunice Wairimu</span>
-        <img src={user} alt="Avatar" className="w-8 h-8 rounded-full" />
+        <img src={avatar} alt="Avatar" className="w-8 h-8 rounded-full" />
         <button
           onClick={toggleTheme}
           className={`p-2 rounded-full ${isDarkMode ? 'bg-gray-700 text-white' : 'bg-gray-200 text-black'}`}
