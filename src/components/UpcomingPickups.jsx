@@ -7,7 +7,7 @@ const UpcomingPickups = () => {
   const upcomingPickupsClass = isDarkMode ? 'text-white' : 'text-gray-800';
 
   const pickups = [
-    { location: 'Suba-face', time: '9:00 am' },
+    { location: 'Subra-face1', time: '9:00 am' },
     { location: 'Soweto', time: '10:00 am' },
     { location: 'Ayany Estate', time: '11:00 am' },
     { location: 'Kamkunji', time: '11:30 am' },

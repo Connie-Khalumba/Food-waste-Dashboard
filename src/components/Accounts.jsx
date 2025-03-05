@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
 import { useUser } from '../context/UserContext'; // Import for role-based rendering
+import backgroundImage from '../Assets/conifers-1867371_1280.jpg';
 
 const Accounts = () => {
   const { isDarkMode } = useTheme();
@@ -47,7 +48,15 @@ const Accounts = () => {
   });
 
   return (
-    <div className={`p-2 md:p-4 lg:p-6 ${isDarkMode ? 'dark:bg-gray-900 dark:text-white' : 'bg-white'}`}>
+    <div
+      className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
+      style={{
+        backgroundImage: `url(${backgroundImage})`, // Use the imported image
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
       <h1 className={`text-xl md:text-2xl font-bold mb-2 md:mb-4 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Accounts</h1>
       <div className="grid grid-cols-1 gap-2 md:gap-4 lg:gap-6 md:grid-cols-2">
         {/* Add/Edit User (Resident can only view/edit their own, Organization can add/edit all) */}
@@ -132,7 +141,7 @@ const Accounts = () => {
                         key={column.id}
                         className={`p-1 md:p-2 text-left font-semibold ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}
                       >
-                        {flexRender(column.columnDef.header, column.getContext())}
+                        {flexRender(column.columnDef?.header, column.getContext())}
                       </th>
                     ))}
                   </tr>

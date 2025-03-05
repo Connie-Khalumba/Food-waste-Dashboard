@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table'; // Updated import
+import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
 
 const ManageMenu = () => {
   const { isDarkMode } = useTheme();
@@ -16,14 +16,23 @@ const ManageMenu = () => {
     setNewCategory({ name: '', price: '', status: 'Active' });
   };
 
+  const handleDelete = (id) => {
+    setCategories(categories.filter((category) => category.id !== id));
+  };
+
   const columns = [
-    { header: 'Name', accessorKey: 'name' },
+    { header: 'Name', accessorKey: 'name' }, // Use 'header' (lowercase) for column header text
     { header: 'Price', accessorKey: 'price' },
     { header: 'Status', accessorKey: 'status' },
     {
       header: 'Actions',
-      cell: () => (
-        <button className={`text-red-600 hover:text-red-800 ${isDarkMode ? 'dark:text-red-400' : ''}`}>Delete</button>
+      cell: ({ row }) => (
+        <button
+          onClick={() => handleDelete(row.original.id)}
+          className={`text-red-600 hover:text-red-800 ${isDarkMode ? 'dark:text-red-400' : ''}`}
+        >
+          Delete
+        </button>
       ),
     },
   ];
@@ -86,7 +95,7 @@ const ManageMenu = () => {
                         key={column.id}
                         className={`p-2 text-left font-semibold ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}
                       >
-                        {flexRender(column.columnDef.header, column.getContext())}
+                        {flexRender(column.columnDef.header, column.getContext())} {/* Ensure correct access to header */}
                       </th>
                     ))}
                   </tr>
@@ -100,7 +109,7 @@ const ManageMenu = () => {
                         key={cell.id}
                         className={`p-2 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}
                       >
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())} {/* Ensure correct access to cell */}
                       </td>
                     ))}
                   </tr>
