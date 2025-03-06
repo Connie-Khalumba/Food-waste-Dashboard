@@ -1,72 +1,126 @@
-import React, { useState } from 'react';
-import { useTheme } from '../context/ThemeContext';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
+import { useTheme } from '../context/ThemeContext'; // Import useTheme for isDarkMode
+import axios from 'axios';
 import backgroundImage from '../Assets/conifers-1867371_1280.jpg'
 
 const Payment = () => {
-  const { isDarkMode } = useTheme();
-  const [paymentData, setPaymentData] = useState({ amount: '', method: 'credit' });
-  const [paymentHistory, setPaymentHistory] = useState([]); // Mock data, replace with API
+  const { userRole, user } = useUser();
+  const { isDarkMode } = useTheme(); // Destructure isDarkMode from ThemeContext
+  const navigate = useNavigate();
+  const [paymentUrl, setPaymentUrl] = useState('');
+  const [error, setError] = useState(null);
+  const [paymentHistory, setPaymentHistory] = useState([]); // State for payment history
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setPaymentHistory([...paymentHistory, { ...paymentData, id: Date.now(), date: new Date().toLocaleDateString(), status: 'Pending' }]);
-    setPaymentData({ amount: '', method: 'credit' });
-  };
+  useEffect(() => {
+    if (userRole !== 'organization' || !user) return;
+
+    const initiatePayment = async () => {
+      try {
+        const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/create-payment`, {
+          email: user.email || 'test@org.com',
+          phone: '254712345678',
+          firstName: 'Test',
+          lastName: 'User',
+          description: 'Standard organization subscription fee',
+        });
+        setPaymentUrl(response.data.paymentUrl);
+
+        // Optionally update payment history (e.g., after confirmation)
+        if (response.data.order_tracking_id) {
+          setPaymentHistory((prev) => [
+            ...prev,
+            { id: response.data.order_tracking_id, amount: 1000, date: new Date().toISOString() },
+          ]);
+        }
+      } catch (error) {
+        console.error('Payment initiation error:', error);
+        setError('Failed to initiate payment. Please try again.');
+      }
+    };
+
+    initiatePayment();
+  }, [userRole, user, navigate]);
+
+  if (userRole !== 'organization') {
+    return (
+      <div
+        className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
+        style={{
+          backgroundImage: `url(${process.env.PUBLIC_URL}/background.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="p-4">
+          <p className={isDarkMode ? 'dark:text-white' : 'text-gray-800'}>Payment options are only available for organizations.</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div
+        className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
+        style={{
+          backgroundImage: `url(${process.env.PUBLIC_URL}/background.jpg)`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
+        <div className="p-4">
+          <p className={isDarkMode ? 'dark:text-white' : 'text-gray-800'}>{error}</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
       className={`h-full overflow-auto ${isDarkMode ? 'dark:bg-gray-900' : ''}`}
       style={{
-        backgroundImage: `url(${backgroundImage})`, // Use the imported image
+        backgroundImage: `url(${backgroundImage}/background.jpg)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
       }}
     >
-      <h1 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Payment</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        {/* Payment Form */}
-        <div className={`bg-white p-4 rounded-lg shadow-md ${isDarkMode ? 'dark:bg-gray-800 dark:shadow-gray-700' : ''}`}>
-          <h2 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : ''}`}>Make a Payment</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <input
-              type="number"
-              placeholder="Amount ($)"
-              value={paymentData.amount}
-              onChange={(e) => setPaymentData({ ...paymentData, amount: e.target.value })}
-              className={`w-full p-2 border rounded ${isDarkMode ? 'dark:bg-gray-700 dark:border-gray-600 dark:text-white' : 'border-gray-300'}`}
-            />
-            <select
-              value={paymentData.method}
-              onChange={(e) => setPaymentData({ ...paymentData, method: e.target.value })}
-              className={`w-full p-2 border rounded ${isDarkMode ? 'dark:bg-gray-700 dark:border-gray-600 dark:text-white' : 'border-gray-300'}`}
-            >
-              <option value="credit">Credit Card</option>
-              <option value="paypal">Intasend</option>
-              <option value="bank">Bank Transfer</option>
-              <option value="bank">m-pesa</option>
-            </select>
-            <button
-              type="submit"
-              className={`w-full p-2 bg-green-600 text-white rounded hover:bg-green-700 ${isDarkMode ? 'dark:bg-green-500 dark:hover:bg-green-600' : ''}`}
-            >
-              Pay Now
-            </button>
-          </form>
-        </div>
+      <div className="p-4">
+        <h2 className={`text-xl font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Make a Payment</h2>
+        <p className={isDarkMode ? 'dark:text-white' : 'text-gray-800'}>Standard Organization Subscription Fee: KES 1000</p>
+        {paymentUrl ? (
+          <a
+            href={paymentUrl}
+            className={`btn btn-primary mt-2 ${isDarkMode ? 'dark:bg-green-700 dark:hover:bg-green-600' : 'bg-green-600 hover:bg-green-700'}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Pay Now (KES 1000)
+          </a>
+        ) : (
+          <p className={isDarkMode ? 'dark:text-white' : 'text-gray-800'}>Initializing payment...</p>
+        )}
 
-        {/* Payment History */}
-        <div className={`bg-white p-4 rounded-lg shadow-md ${isDarkMode ? 'dark:bg-gray-800 dark:shadow-gray-700' : ''}`}>
-          <h2 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : ''}`}>Payment History</h2>
-          <ul className="space-y-2">
-            {paymentHistory.map((payment) => (
-              <li key={payment.id} className={`p-2 rounded ${isDarkMode ? 'dark:bg-gray-700' : 'bg-gray-100'}`}>
-                <p className={isDarkMode ? 'dark:text-white' : 'text-gray-800'}>${payment.amount} - {payment.method}</p>
-                <p className={isDarkMode ? 'dark:text-gray-400' : 'text-gray-500'}>Date: {payment.date}, Status: {payment.status}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Display Payment History */}
+        {paymentHistory.length > 0 && (
+          <div className={`mt-4 ${isDarkMode ? 'dark:bg-gray-800' : 'bg-white'} p-4 rounded-lg shadow-md`}>
+            <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : 'text-gray-800'}`}>Payment History</h3>
+            <ul>
+              {paymentHistory.map((payment, index) => (
+                <li
+                  key={index}
+                  className={`py-2 ${isDarkMode ? 'dark:text-gray-300' : 'text-gray-700'} border-b ${isDarkMode ? 'dark:border-gray-700' : 'border-gray-200'}`}
+                >
+                  Order ID: {payment.id}, Amount: KES {payment.amount}, Date: {new Date(payment.date).toLocaleDateString()}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );

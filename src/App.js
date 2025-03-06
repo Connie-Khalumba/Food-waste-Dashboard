@@ -11,6 +11,7 @@ import Payment from './components/Payment';
 import Accounts from './components/Accounts';
 import Help from './components/Help';
 import OrganizationDashboard from './components/OrganizationDashboard';
+import PaymentConfirmation from './components/PaymentConfirmation';
 import Login from './components/Login'; // Import Login component
 import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider, useUser } from './context/UserContext';
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/help" element={<Help />} />
                   <Route path="/organization" element={<OrganizationDashboard />} />
                   <Route path="*" element={<Navigate to="/login" replace />} /> {/* Redirect unauthenticated users to login */}
+                  <Route path="/payment-confirmation" element={<PaymentConfirmation />} />
                 </Routes>
               </main>
             </div>
