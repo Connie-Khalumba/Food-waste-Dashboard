@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext'; // Add for role-based rendering
 import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
+import { FiGlobe } from 'react-icons/fi';
 import logo from '../Assets/logo.redifu-removebg-preview.png'
 
 const Sidebar = ({ isOpen, onClose }) => {
@@ -18,6 +19,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: 'Payment', icon: FiDollarSign, path: '/payment' },
     { name: 'Accounts', icon: FiUsers, path: '/accounts' },
     { name: 'Help', icon: FiHelpCircle, path: '/help' },
+    { name: 'Visit Main Website', icon: FiGlobe, path: 'https://redifu-git-main-conniekhalumbas-projects.vercel.app/' },
   ];
 
   // Add organization-specific menu items if needed
