@@ -11,6 +11,7 @@ import Payment from './components/Payment';
 import Accounts from './components/Accounts';
 import Help from './components/Help';
 import OrganizationDashboard from './components/OrganizationDashboard';
+import Login from './components/Login'; // Import Login component
 import { ThemeProvider } from './context/ThemeContext';
 import { UserProvider, useUser } from './context/UserContext';
 
@@ -37,6 +38,7 @@ function App() {
               <Header toggleSidebar={toggleSidebar} />
               <main className="flex-1 p-4 overflow-auto md:p-6">
                 <Routes>
+                  <Route path="/login" element={<Login />} />
                   <Route path="/" element={<DashboardWrapper />} />
                   <Route path="/pickup-schedule" element={<PickupSchedule />} />
                   <Route path="/manage-menu" element={<ManageMenu />} />
@@ -45,7 +47,8 @@ function App() {
                   <Route path="/payment" element={<Payment />} />
                   <Route path="/accounts" element={<Accounts />} />
                   <Route path="/help" element={<Help />} />
-                  <Route path="/organization" element={<OrganizationDashboard />} /> {/* Optional explicit route for organizations */}
+                  <Route path="/organization" element={<OrganizationDashboard />} />
+                  <Route path="*" element={<Navigate to="/login" replace />} /> {/* Redirect unauthenticated users to login */}
                 </Routes>
               </main>
             </div>
@@ -56,10 +59,12 @@ function App() {
   );
 }
 
-// Wrapper component to handle role-based dashboard rendering
 const DashboardWrapper = () => {
-  const { userRole } = useUser();
+  const { userRole, user } = useUser();
 
+  if (!user) {
+    return <Navigate to="/login" replace />; // Redirect to login if not authenticated
+  }
   if (userRole === 'organization') {
     return <Navigate to="/organization" replace />; // Redirect organizations to /organization
   }
