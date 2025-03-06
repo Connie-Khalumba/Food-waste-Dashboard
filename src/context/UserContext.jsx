@@ -1,20 +1,29 @@
-// src/context/UserContext.js
+// src/context/UserContext.jsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { auth } from '../firebase'; // Import Firebase auth
-import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase' // Firebase Auth
+import { onAuthStateChanged } from 'firebase/auth'; // Auth state listener
+import { doc, getDoc, setDoc } from 'firebase/firestore'; // Firestore functions
+import { db } from '../firebase'; // Firestore instance
 
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
   const [userRole, setUserRole] = useState(null); // null until authenticated
-  const [user, setUser] = useState(null); // Track authenticated user
+  const [user, setUser] = useState(null); // Track authenticated user (now used)
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        // Fetch role from Firestore or set a default
-        fetchUserRole(user.uid);
+        // Fetch role from Firestore
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          setUserRole(userDoc.data().role || 'resident'); // Default to resident if no role
+        } else {
+          setUserRole('resident'); // Default for new users
+          // Create a new user document with default role
+          await setDoc(doc(db, 'users', user.uid), { role: 'resident' }, { merge: true });
+        }
       } else {
         setUserRole(null); // Logout
       }
@@ -22,28 +31,18 @@ export function UserProvider({ children }) {
     return unsubscribe; // Cleanup subscription
   }, []);
 
-  const fetchUserRole = async (uid) => {
-    // Replace with your Firestore collection and document structure
-    const userDoc = await getDoc(doc(db, 'users', uid));
-    if (userDoc.exists()) {
-      setUserRole(userDoc.data().role || 'resident'); // Default to resident if no role
-    } else {
-      setUserRole('resident'); // Default for new users
-    }
-  };
-
-  const updateUserRole = (role) => {
+  const updateUserRole = async (role) => {
     setUserRole(role);
     if (user) {
       // Update role in Firestore
-      setDoc(doc(db, 'users', user.uid), { role }, { merge: true });
+      await setDoc(doc(db, 'users', user.uid), { role }, { merge: true });
     }
   };
 
   const value = {
     userRole,
     setUserRole: updateUserRole,
-    user, // Expose user object for authentication state
+    user, // Expose user object for authentication checks
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

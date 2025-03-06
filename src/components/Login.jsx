@@ -1,4 +1,3 @@
-// src/components/Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
@@ -16,16 +15,17 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      // Optionally set role based on email or fetch from Firestore
+      console.log('Logged in user:', user.uid);
       if (email.includes('@org.com')) {
-        setUserRole('organization'); // Example: Set role based on email domain
+        setUserRole('organization');
       } else {
         setUserRole('resident');
       }
-      navigate('/'); // Redirect to dashboard after login
+      navigate('/');
     } catch (error) {
-      console.error('Login failed:', error.message);
-      alert('Login failed: ' + error.message);
+      console.error('Login failed:', error.code, error.message);
+      console.error('Firebase Auth instance:', auth); // Debug the auth instance
+      alert('Login failed: ' + error.message + ' (' + error.code + ')');
     }
   };
 
