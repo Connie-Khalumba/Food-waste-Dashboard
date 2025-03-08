@@ -16,7 +16,7 @@ const UpcomingPickups = () => {
   return (
     <div className={`bg-white p-4 rounded-lg shadow-md col-span-1 md:col-span-2 ${isDarkMode ? 'dark:bg-gray-800 dark:shadow-gray-700' : ''}`}>
       <h2 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'dark:text-white' : ''}`}>Upcoming Pickups</h2>
-      <p className={`text-sm ${isDarkMode ? 'dark:text-gray-400' : 'text-gray-500'} mb-2`}>Adipiscing elit, sed do eiusmod tempor</p>
+      <p className={`text-sm ${isDarkMode ? 'dark:text-gray-400' : 'text-gray-500'} mb-2`}>Schedule your next waste pick up</p>
       <ul className="space-y-2">
         {pickups.map((pickup, index) => (
           <li key={index} className="flex items-center space-x-4">
