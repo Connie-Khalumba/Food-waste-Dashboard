@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { useUser } from '../context/UserContext'; // Add for role-based rendering
-import { FiHome, FiCalendar, FiMenu, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
+import { FiHome, FiCalendar, FiStar, FiSettings, FiDollarSign, FiUsers, FiHelpCircle } from 'react-icons/fi';
+import { BiHistory } from "react-icons/bi";
 import { FiGlobe } from 'react-icons/fi';
 import logo from '../Assets/logo.redifu-removebg-preview.png'
 
@@ -13,7 +14,7 @@ const Sidebar = ({ isOpen, onClose }) => {
   const menuItems = [
     { name: 'Dashboard', icon: FiHome, path: '/' },
     { name: 'Pickup Schedule', icon: FiCalendar, path: '/pickup-schedule' },
-    { name: 'Manage Menu', icon: FiMenu, path: '/manage-menu' },
+    { name: 'Order History', icon: BiHistory, path: '/order-history' },
     { name: 'Customer Review', icon: FiStar, path: '/customer-review' },
     { name: 'Settings', icon: FiSettings, path: '/settings' },
     { name: 'Payment', icon: FiDollarSign, path: '/payment' },

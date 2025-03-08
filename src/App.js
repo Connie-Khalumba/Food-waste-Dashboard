@@ -4,7 +4,7 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import DashboardContent from './components/DashboardContent';
 import PickupSchedule from './components/PickupSchedule';
-import ManageMenu from './components/ManageMenu';
+import OrderHistory from './components/OrderHistory'; 
 import CustomerReview from './components/CustomerReview';
 import Settings from './components/Settings';
 import Payment from './components/Payment';
@@ -42,7 +42,7 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/" element={<DashboardWrapper />} />
                   <Route path="/pickup-schedule" element={<PickupSchedule />} />
-                  <Route path="/manage-menu" element={<ManageMenu />} />
+                  <Route path="/order-history" element={<OrderHistory />} />
                   <Route path="/customer-review" element={<CustomerReview />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/payment" element={<Payment />} />

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { auth } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth, db } from '../firebase';
+import { signInWithEmailAndPassword, updateProfile } from 'firebase/auth'; // Import updateProfile
 import { useUser } from '../context/UserContext';
+import { doc, getDoc } from 'firebase/firestore';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setUserRole } = useUser();
+  const { setUser, setUserRole } = useUser();
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -15,16 +16,27 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log('Logged in user:', user.uid);
-      if (email.includes('@org.com')) {
-        setUserRole('organization');
-      } else {
-        setUserRole('resident');
+      console.log('Logged in user:', user.uid, user.email);
+
+      // Fetch role from Firestore
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      const role = userDoc.exists() ? userDoc.data().role : (email.includes('@org.com') ? 'organization' : 'resident');
+      setUserRole(role);
+
+      // Set user in context immediately
+      setUser(user);
+
+      // Set displayName if not already set
+      if (!user.displayName) {
+        const displayName = email.split('@')[0]; // Fallback to email local part
+        await updateProfile(user, { displayName }); // Use updateProfile function
+        setUser({ ...user, displayName }); // Update context with new displayName
       }
+
       navigate('/');
     } catch (error) {
       console.error('Login failed:', error.code, error.message);
-      console.error('Firebase Auth instance:', auth); // Debug the auth instance
+      console.error('Firebase Auth instance:', auth);
       alert('Login failed: ' + error.message + ' (' + error.code + ')');
     }
   };
